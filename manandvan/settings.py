@@ -18,11 +18,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 
 
 STATICFILES_DIRS = (
-  
+  STATIC_PATH,
 )
 
 
@@ -66,7 +66,7 @@ ROOT_URLCONF = 'manandvan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['manandvan/templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
