@@ -360,7 +360,7 @@ h6 {
 	display:inline-block;
 	overflow:hidden;
 	vertical-align:middle;
-	background-image:url(icons.png);
+	background-image:url(../images/icons.png);
 	background-repeat:no-repeat;
 	background-color:transparent !important;
 }
@@ -602,7 +602,7 @@ h6 {
 	margin:0;
 }
 .intro {
-	background:url(keyvisual.jpg) 50% 0 fixed no-repeat;
+	background:url(../images/uploads/keyvisual.jpg) 50% 0 fixed no-repeat;
 	height:100vh;
 	overflow:hidden;
 	float:left;
@@ -2008,42 +2008,42 @@ blockquote:before {
 	position:absolute;
 }
 .social .facebook a:before {
-	background:url(icons.png) 0 -30px no-repeat;
+	background:url(../images/icons.png) 0 -30px no-repeat;
 	width:10px;
 	height:20px;
 	top:10px;
 	left:14.5px;
 }
 .social .twitter a:before {
-	background:url(icons.png) -12px -33px no-repeat;
+	background:url(../images/icons.png) -12px -33px no-repeat;
 	width:25px;
 	height:17px;
 	top:12px;
 	left:8px;
 }
 .social .gplus a:before {
-	background:url(icons.png) -59px -31px no-repeat;
+	background:url(../images/icons.png) -59px -31px no-repeat;
 	width:13px;
 	height:19px;
 	top:11px;
 	left:13px;
 }
 .social .linkedin a:before {
-	background:url(icons.png) -38px -32px no-repeat;
+	background:url(../images/icons.png) -38px -32px no-repeat;
 	width:18px;
 	height:18px;
 	top:11px;
 	left:11px;
 }
 .social .vimeo a:before {
-	background:url(icons.png) -75px -32px no-repeat;
+	background:url(../images/icons.png) -75px -32px no-repeat;
 	width:20px;
 	height:18px;
 	top:12px;
 	left:9.5px;
 }
 .social .pinterest a:before {
-	background:url(icons.png) -98px -31px no-repeat;
+	background:url(../images/icons.png) -98px -31px no-repeat;
 	width:18px;
 	height:19px;
 	top:11px;
