@@ -20,4 +20,16 @@ from book import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
+
+    url(r'^about-us.html', views.aboutus),
+    url(r'^becomeadriver.html', views.becomeadriver),
+    url(r'^contact.html', views.contact),
+    url(r'^faq.html', views.faq),
+    url(r'^for-partner.html', views.forpartner),
+    url(r'^how-it-works.html', views.howitworks),
+    url(r'^moving-guide.html', views.movingguide),
+    url(r'^privacy.html', views.privacy),
+    url(r'^service-area.html', views.servicearea),
+    url(r'^terms.html', views.terms),
+
 ]

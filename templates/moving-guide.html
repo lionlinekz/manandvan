@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+{% load static from staticfiles %}
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Vanagoo</title>
-<link rel="stylesheet" href="css/styler.css" />
-<link rel="stylesheet" href="css/theme-pink.css" id="template-color" />
-<link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/animate.css" />
+<link rel="stylesheet" href="{% static "css/styler.css" %}" />
+<link rel="stylesheet" href="{% static "css/theme-pink.css" %}" id="template-color" />
+<link rel="stylesheet" href="{% static "css/style.css" %}" />
+<link rel="stylesheet" href="{% static "css/animate.css" %}" />
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link rel="shortcut icon" href="images/favicon.png" />
+<link rel="shortcut icon" href="{% static "images/favicon.png" %}" />
 </head>
 
 <body class="home">
