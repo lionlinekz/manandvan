@@ -22,9 +22,10 @@ def book(request):
 
 		u='https://maps.googleapis.com/maps/api/distancematrix/json?origins='+orig+'&destinations='+dest+'&mode=driving&language=en-GB&key='+key
 
-		map_data=yaml.safe_load(requests.get(u).text)
+		
 
 		if date == '112358':
+			map_data=yaml.safe_load(requests.get(u).text)
 			if str(map_data['status'])=='OK':
 				context_dict['duration'] = map_data['rows'][0]['elements'][0]['duration']['text']
 				context_dict['price'] = int(float(map_data['rows'][0]['elements'][0]['distance']['value'])*0.001)
@@ -49,7 +50,7 @@ def book(request):
 
 
 def index(request):
-	return render(request, 'index.html')
+	return render(request, 'mymove.html')
 # Create your views here.
 
 

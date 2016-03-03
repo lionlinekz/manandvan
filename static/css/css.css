@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Chivo';
+  font-style: normal;
+  font-weight: 900;
+  src: local('Chivo Black'), local('Chivo-Black'), url(https://fonts.gstatic.com/s/chivo/v7/TX_hNweQrqAZr-ujaKg9pnYhjbSpvc47ee6xR_80Hnw.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/MDadn8DQ_3oT6kvnUq_2r_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/MgNNr5y1C_tIEuLEmicLmwLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYEJBw1xU1rKptJj_0jans920.woff2) format('woff2');
+}
