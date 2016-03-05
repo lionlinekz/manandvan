@@ -19,7 +19,7 @@ from book import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^book/', include('book.urls')),
+    url(r'^book.html', include('book.urls')),
 
 
     #tmp templates
