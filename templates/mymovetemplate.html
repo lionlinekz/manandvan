@@ -64,6 +64,18 @@ $( document ).ready(function() {
 
     });
 
+    $.get('/pageapp/approxprice/', function(data) {
+                        if(data != "0") {
+                                $('#quickQuote').fadeOut(function() {
+                                    $('#quoteEstimateHeader').html('Your Man And Van quote could be as little as:');
+                                    $('#quickQuote').html('£ '+data);
+                                    $('#quickQuote').fadeIn();
+                                });
+                        } else {
+                            $('#quickQuote').fadeOut();
+                        }
+                    });
+
     $(document).on('click', '.removeVia', function() {
         var target = $(this).attr('data-target');
         if( $('#' + target + '_postcode').val() )
@@ -260,6 +272,8 @@ function calculatePassengerSpace() {
 }
 
 </script>
+<script>
+</script>
 
 <div class="innermain">
     <!-- /pageapp/move-data.php -->
@@ -273,7 +287,7 @@ function calculatePassengerSpace() {
                         <p>We just need a little more information to give you the most accurate quote possible</p>
                     </div>
                     <div class="col-xs-12 col-md-4 text-right">
-                        <h1 style="display: block;" id="quickQuote">£ XXX.YY</h1>
+                        <h1 style="display: block;" id="quickQuote">£ XX.YY</h1>
                     </div>
                 </div>
             </div>

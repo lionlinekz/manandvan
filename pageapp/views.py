@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from random import randint
 
 import requests, yaml, datetime
 
@@ -17,5 +18,9 @@ def checkpostcode(request, postcode=None):
 		return HttpResponse(str(data['result']))
 	else:
 		return HttpResponse("error")
+
+def approxprice(request):
+	s = str(randint(33,99))+'.'+str(randint(0,99))
+	return HttpResponse(s)
 
 
