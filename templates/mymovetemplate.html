@@ -1,0 +1,572 @@
+{% extends 'base.html' %}
+
+{% load static from staticfiles %}
+
+{% block css_block %}
+<link href="{% static "css/css.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bootstrap.css" %}" type="text/css" rel="stylesheet">
+<link href="{% static "css/jquery.css" %}" type="text/css" rel="stylesheet">
+<link href="{% static "css/v3.css" %}" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block body_block %}
+
+<!-- This is set if functions for manipulating with form data such as #seatInVan -->
+<script>
+$( document ).ready(function() {
+    var viaCount = 0 + 1;
+    
+    $('#addVia').click(function() {
+        if(viaCount < 3 && viaCount > 0){
+        var viaHeight = $('#viaStops').height();
+        $('#viaStops').show();
+        $('#viaStops').append(
+            '<div class="row address-row" id="via_' + viaCount + '">' +
+            '<div class="col-xs-12 col-md-3">' +
+            '<label for="via_' + viaCount + '_postcode">Via</label>' +
+            '<div class="input-group">' +
+            '<input type="text" class="form-control" id="via_' + viaCount + '_postcode" name="via_postcode[]" placeholder="Postcode"' + 'required>' +
+            '<span class="input-group-btn">' +
+            '<button class="btn btn-green findAddress" data-source="via_' + viaCount + '" type="button">Find Address</button>' +
+            '</span>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-xs-12 col-md-3">' +
+            '<label for="via_' + viaCount + '_street_address_1">Street Address</label> <input type="text" class="form-control" id="via_' + viaCount + '_street_address_1" name="via_street_address_1[]" required>' +
+            '</div>' +
+            '<div class="col-xs-12 col-md-3">' +
+            '<label for="via_' + viaCount + '_city">City</label> <input type="text" class="form-control" id="via_' + viaCount + '_city"' + 'name="via_city[]">' +
+            '</div>' +
+            '<div class="col-xs-12 col-md-3 form-inline">' +
+            '<label for="via_' + viaCount + '_stairs">At this address there</label>' +
+            '<select class="form-control" id="via_' + viaCount + '_stairs" name="via_stairs[]" style="width: 218px;">' +
+            '<option value="0">are no flights of stairs</option>' +
+            '<option value="s1">is 1 flight of stairs</option>' +
+            '<option value="s2">are 2 flights of stairs</option>' +
+            '<option value="s3">are 3 flights of stairs</option>' +
+            '<option value="s4">are 4 flights of stairs</option>' +
+            '<option value="s5+">are 5+ flights of stairs</option>' +
+            '<option value="l1">is a lift and we\'re on the first floor</option>' +
+            '<option value="l2">is a lift and we\'re on the second floor</option>' +
+            '<option value="l3">is a lift and we\'re on the third floor</option>' +
+            '<option value="l4">is a lift and we\'re on the fourth floor</option>' +
+            '<option value="l5+">is a lift and we\'re on the fifth floor or higher</option>' +
+            '</select> ' +
+            '<button type="button" class="btn btn-danger removeVia" data-target="via_' + viaCount + '">X</button>' +
+            '</div>' +
+            '</div>' +
+            '<div class="row" id="via_' + viaCount + 'AddressResult"></div>');
+
+
+        $('#via_' + viaCount + '_postcode').focus();
+        viaCount++;
+        }
+
+    });
+
+    $(document).on('click', '.removeVia', function() {
+        var target = $(this).attr('data-target');
+        if( $('#' + target + '_postcode').val() )
+        {
+            var r=confirm("Are you sure you want to remove this stop?");    
+        }
+        if (r==false)
+        {
+            return false;
+        } else 
+        {        
+            $('#' + target).remove();
+            $('#' + target + 'AddressResult').remove();
+            viaCount--;            
+        }
+    });
+
+    $(document).on('click', '.findAddress', function() {
+        var button = $(this);
+        var source = $(this).attr('data-source');
+        var postcode = $('#' + source + '_postcode').val();
+        button.html('Finding...');
+        $.get(encodeURI('/pageapp/routing-data.php?action=getAddressFromPostcode&postcode=' + postcode + '&target=' + source), function(data) {
+            $('#' + source + 'AddressResult').html(data).fadeIn();
+            button.html('Edit Address');
+            if( $( window ).width() <= 767 ) { 
+                $("html, body").animate({ scrollTop: $('#' + source + 'AddressResult').offset().top }, 1000);
+            }
+        });
+    });
+                    
+                    $(document).on('click', '.completeAddress', function() {
+                    
+                        var target = $(this).attr('data-target');
+                        var street = $(this).attr('data-street');
+                        var place = $(this).attr('data-place');
+                        
+                        $('#' + target + '_street_address_1').val(street);
+                        $('#' + target + '_city').val(place);
+                        
+                        $('#' + target + 'AddressResult').fadeOut();
+                        
+                        if( $( window ).width() <= 767 ) { 
+                                    $("html, body").animate({ scrollTop: $('#' + target + '_postcode').offset().top }, 1000);
+                        }
+                    
+                    });
+                    
+                    $('input[name="van_size"], #survey_required').on('change', function() { 
+                        
+                        showQuestions();
+                    
+                    });
+                    
+                    $('input[name="van_size"]').on('change', function() {       
+                        
+                        inputCheck('van_size');
+                        calculatePassengerSpace();
+                    
+                    });
+                    
+                    $('input[name="helpers_required"]').on('change', function() { 
+                        
+                        inputCheck('helpers_required');
+                        showQuestions();
+                        calculatePassengerSpace();
+                    
+                    });
+                    
+                    
+                    function showQuestions() {
+                    
+                        var selectedVan = $('input[name="van_size"]:checked').val();
+                        var selectedHelpers = $('input[name="helpers_required"]:checked').val();
+                        
+                        if(selectedHelpers > 0) {
+                            $('.stairsQuestion').show();
+                        } else {
+                            $('.stairsQuestion').hide();
+                        }
+                    
+                    }
+                    
+                    showQuestions();
+                    calculatePassengerSpace();  
+                    
+                        
+                    $('.datePicker').datetimepicker({
+                            format:'d-m-Y',
+                            timepicker: false,
+                            closeOnDateSelect:true,
+                            minDate:'-1970/01/01',
+                            maxDate:'+1971/01/01',
+                            scrollMonth: false
+                    });
+                    
+                    $.validator.addMethod("FutureDate",
+                        function (value, element) { 
+                            return new Date(value.split('-')[2], value.split('-')[1] - 1, value.split('-')[0], 23, 59) >= new Date().getTime(); },
+                        "Your move date must be in the future"
+                    );
+                    
+                    $.validator.addMethod("FutureTime",
+                        function (value, element) { 
+                            var enteredDate = $('#move_date').val();
+                            return new Date(enteredDate.split('-')[2], enteredDate.split('-')[1] - 1, enteredDate.split('-')[0], value.split(':')[0], value.split(':')[1]) > new Date().getTime(); },
+                        "Your move time must be in the future"
+                    );
+                    
+                    
+                    $("#my-move-form").validate({
+                            rules: {
+                                move_date: { required: true, FutureDate: true },
+                                move_time: { required: true, FutureTime: true }
+                            },
+                            submitHandler: function(form) {
+                                form.submit();
+                            },
+                            showErrors: function (errorMap, errorList) {
+
+                                $.each(this.successList, function (index, value) {
+                                    $('#'+value.id+'').tooltip('destroy');
+                                });
+
+
+                                $.each(errorList, function (index, value) {
+
+                                    $('#'+value.element.id+'').attr('title',value.message).tooltip({
+                                        placement: 'top',
+                                        trigger: 'manual',
+                                        delay: { show: 500, hide: 5000 }
+                                    }).tooltip('show');
+
+                                });
+                                
+                            },
+                            focusInvalid: false,
+                            invalidHandler: function(form, validator) {
+
+                                if (!validator.numberOfInvalids())
+                                    return;
+
+                                $('html, body').animate({
+                                    scrollTop: $(validator.errorList[0].element).offset().top - 100
+                                }, 1000);
+
+                            }
+
+                    });
+                    
+                    
+                    
+                });
+
+function inputCheck(name) {
+
+    $('input[name="' + name + '"]').parents(".itemSelect").removeClass('selected');
+    $('input[name="' + name + '"]').each(function(index,value) { 
+        if($(this).is(":checked")) {
+            $(this).parents().eq(2).addClass('selected');
+        }
+    });
+
+}
+                    
+function calculatePassengerSpace() {
+    var passengerSpace = $('input[name="van_size"]:checked').attr('data-passenger-space');
+    var passengerSpaceTaken = $('input[name="helpers_required"]:checked').attr('data-passenger-space-taken');
+    var selectedVan = $('input[name="van_size"]:checked').val();
+    var selectedHelpers = $('input[name="helpers_required"]:checked').val();
+
+    var spaceAvailable = passengerSpace - passengerSpaceTaken;
+
+    if(selectedVan == "small_van") {
+        $("#helpers_required_3").attr("disabled", true).parents().eq(2).removeClass('selected').addClass('disabled');
+        if(selectedHelpers == 3) {
+            $('#helpers_required_2').prop('checked', true).parents().eq(2).addClass('selected');
+        }
+    } else {
+        $("#helpers_required_3").removeAttr("disabled").parents().eq(2).removeClass('disabled');
+    }
+
+    if(spaceAvailable == 0) {
+        $('#vanPassengers').html("Based on your selection there won't be any room for passengers to travel in the van");
+    }
+
+    if(spaceAvailable == 1) {
+        $('#vanPassengers').html('<img src="{% static "images/van_passenger.png" %}"> There will be room for 1 passenger to travel in the van');
+    }
+
+    if(spaceAvailable == 2) {
+        $('#vanPassengers').html('<img src="{% static "images/van_passenger.png" %}"> <img src="{% static "images/van_passenger.png" %}"> There will be room for 2 passengers to travel in the van');
+    }
+}
+
+</script>
+
+<div class="innermain">
+    <!-- /pageapp/move-data.php -->
+    <form novalidate="novalidate" role="form" action="/" method="get" id="my-move-form">
+        <!-- estimate price -->
+        <div class="blueBanner hidden-xs firstBanner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-8">
+                        <h1 id="quoteEstimateHeader">Your Man And Van quote could be as little as:</h1>
+                        <p>We just need a little more information to give you the most accurate quote possible</p>
+                    </div>
+                    <div class="col-xs-12 col-md-4 text-right">
+                        <h1 style="display: block;" id="quickQuote">£ XXX.YY</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Van size calculator -->
+        <div class="container">
+            <h1 id="which_van_size"><b>Which vehicle do you need?</b></h1>
+            <p>It is important that you select the correct vehicle for the amount that you wish to move. Please be sure to consult our Size Guide for advice on the size of vehicle that would be suitable for you.</p>
+            <div class="row extraPadding">
+                <div class="col-xs-12 col-md-9">
+                    <h3 class="noTopMargin">Need help choosing which vehicle? Call one of our expert team on xxx xxxx xxx</h3>
+                </div>
+                <div class="col-xs-12 col-md-3 text-right">
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Van size select images -->
+        <div class="blueBanner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Typical Specifications&lt;br&gt;Length: 1.7 m / 5.58 ft&lt;br&gt;Width: 1.49 m / 4.89 ft&lt;br&gt;Height: 1.2 m / 3.94 ft&lt;br&gt;Payload 600 - 900kg&lt;br&gt;Seats (inc driver) 2" for="vanSizeSmall" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/small_van.png" %}">
+                            <p><input aria-required="true" name="van_size" id="vanSizeSmall" data-passenger-space="1" value="small_van" required="" type="radio"> Small van</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect selected">
+                            <label data-original-title="Typical Specifications&lt;br&gt;Length: 2.4 m / 7.87 ft&lt;br&gt;Width: 1.7 m / 5.58 ft&lt;br&gt;Height: 1.4 / 4.59 ft&lt;br&gt;Payload 900-1200kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeMedium" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/medium_van.png" %}">
+                            <p><input name="van_size" id="vanSizeMedium" data-passenger-space="2" value="medium_van" checked="checked" type="radio"> Medium van</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Typical Specifications&lt;br&gt;Length: 3.4 m / 11.16 ft&lt;br&gt;Width: 1.7 m / 5.58 ft&lt;br&gt;Height: 1.7 m / 5.58 ft&lt;br&gt;Payload 1200-1500kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeXlwb" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/large_van.png" %}" title="Extra Large Wheel Base van">
+                            <p><input name="van_size" id="vanSizeXlwb" data-passenger-space="2" value="xlwb_van" title="Extra Large Wheel Base van" type="radio"> Large van</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Typical Specifications&lt;br&gt;Length: 4.0 m / 13.12 ft&lt;br&gt;Width: 2.0 m / 6.56 ft&lt;br&gt;Height: 2.2 m / 7.22 ft&lt;br&gt;Payload 1​2​00-1​6​00kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeLuton" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/giant_van.png" %}" title="Luton van">
+                            <p><input name="van_size" id="vanSizeLuton" data-passenger-space="2" value="luton_van" title="Luton van" type="radio"> Giant van</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Number of helpers -->
+        <div id="helpNeededQuestion">
+            <div class="container">
+                <h1><b>Will you need help?</b></h1>
+                <p>Our drivers will be happy to help you with your move, and we 
+                can also provide extra people if you'd like to make your move a bit 
+                quicker.</p>
+            </div>
+            <div class="blueBanner">
+                <div class="container">
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect selected">
+                            <label data-original-title="Your driver will arrive and drive only, he will not load and unload your items for you" for="helpers_required_0" data-toggle="tooltip" data-placement="bottom" title="">
+                            <img src="{% static "images/no_help_blue.png" %}">
+                            <p><input checked="checked" aria-required="true" name="helpers_required" id="helpers_required_0" data-passenger-space-taken="0" value="0" required="" type="radio"> No help needed</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Your driver will arrive and load and unload your items for you" for="helpers_required_1" data-toggle="tooltip" data-placement="bottom" title=""><img src="{% static "images/1_helper_blue.png" %}">
+                            <p><input aria-required="true" name="helpers_required" id="helpers_required_1" data-passenger-space-taken="0" value="1" required="" type="radio"> Driver helping</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Your driver will arrive with one other helper and both will load and unload your items for you" for="helpers_required_2" data-toggle="tooltip" data-placement="bottom" title=""><img src="{% static "images/2_helpers_blue.png" %}">
+                            <p><input aria-required="true" name="helpers_required" id="helpers_required_2" data-passenger-space-taken="1" value="2" required="" type="radio"> Driver helping + 1 helper</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="itemSelect">
+                            <label data-original-title="Your driver will arrive with two other helpers and all will load and unload your items for you" for="helpers_required_3" data-toggle="tooltip" data-placement="bottom" title=""><img src="{% static "images/3_helpers_blue.png" %}">
+                            <p><input aria-required="true" name="helpers_required" id="helpers_required_3" data-passenger-space-taken="2" value="3" required="" type="radio"> Driver helping + 2 helpers</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hint about seats in van -->
+        <div class="container">
+            <h1 id="which_van_size"><b>Can I travel in the van?</b></h1>
+            <p>Our drivers are always happy to offer any spare seats in 
+            their vans to Compare The Man And Van customers. Spare seats are based 
+            on your van size selection and the number of helpers you have requested.
+            You are <b>not</b> charged extra to travel in the van.</p>  
+        </div>
+
+        <!-- Number of available seats -->
+        <div class="blueBanner">
+            <div class="container">
+                <h3 id="vanPassengers"><img src="{% static "images/van_passenger.png" %}"> <img src="{% static "images/van_passenger.png" %}"> There will be room for 2 passengers to travel in the van</h3>
+            </div>
+        </div>
+
+        <!-- Hint about extra things like stairs -->
+        <div class="container">
+            <h1 id="where_youre_moving"><b>Where you're moving</b></h1>
+            <p>Your Man and Van quotes depend on how much work needs to be 
+            carried out at each end of the move, things like stairs might increase 
+            the prices but it’s important that we know everything so that we can 
+            give you accurate Man and Van quotations.</p>
+        </div>
+
+        <!-- Tochny address i kak vysoko podnimat' -->
+        <div class="blueBanner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h3>Collection Address</h3>
+                    </div>
+                </div>
+                <div class="row address-row">
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="collection_postcode">Postcode</label>
+                        <div class="input-group">
+                            <input aria-required="true" class="form-control" id="collection_postcode" name="collection_postcode" value="{{from}}" required="" type="text">
+                            <span class="input-group-btn">
+                            <button class="btn btn-green findAddress" data-source="collection" type="button">Edit Address</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="collection_street_address_1">Street Address</label> <input aria-required="true" class="form-control" id="collection_street_address_1" name="collection_street_address_1" value="" required="" type="text">
+                    </div>
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="collection_city">City</label> <input class="form-control" id="collection_city" name="collection_city" value="" type="text">
+                    </div>        
+                    <div style="display: block;" class="col-xs-12 col-md-3 form-horizontal stairsQuestion">
+                        <label for="collection_stairs">At my collection address there</label> <select aria-invalid="false" class="form-control" id="collection_stairs" name="collection_stairs">
+                        <option value="0" selected="selected">are no flights of stairs</option>
+                        <option value="s1">is 1 flight of stairs</option>
+                        <option value="s2">are 2 flights of stairs</option>
+                        <option value="s3">are 3 flights of stairs</option>
+                        <option value="s4">are 4 flights of stairs</option>
+                        <option value="s5+">are 5+ flights of stairs</option>
+                        <option value="l1">is a lift and we're on the first floor</option>
+                        <option value="l2">is a lift and we're on the second floor</option>
+                        <option value="l3">is a lift and we're on the third floor</option>
+                        <option value="l4">is a lift and we're on the fourth floor</option>
+                        <option value="l5+">is a lift and we're on the fifth floor or higher</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="collectionAddressResult">
+                </div>
+                <div id="viaStops">
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <p><button type="button" id="addVia" class="btn btn-green btn-lg"><span class="glyphicon glyphicon-plus"></span> Add stop</button></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h3>Delivery Address</h3>
+                    </div>
+                </div>
+                <div class="row address-row">
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="delivery_postcode">Postcode</label>
+                        <div class="input-group">
+                            <input aria-required="true" class="form-control" id="delivery_postcode" name="delivery_postcode" value="{{to}}" required="" type="text">
+                            <span class="input-group-btn">
+                            <button class="btn btn-green findAddress" data-source="delivery" type="button">Edit Address</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="delivery_street_address_1">Street Address</label> <input aria-required="true" class="form-control" id="delivery_street_address_1" name="delivery_street_address_1" value="" required="" type="text">
+                    </div>
+                    <div class="col-xs-12 col-md-3 form-horizontal">
+                        <label for="delivery_city">City</label> <input class="form-control" id="delivery_city" name="delivery_city" value="" type="text">
+                    </div>
+                    <div style="display: block;" class="col-xs-12 col-md-3 form-horizontal stairsQuestion">
+                        <label for="delivery_stairs">At my delivery address there</label> <select class="form-control" id="delivery_stairs" name="delivery_stairs">
+                        <option value="0" selected="selected">are no flights of stairs</option>
+                        <option value="s1">is 1 flight of stairs</option>
+                        <option value="s2">are 2 flights of stairs</option>
+                        <option value="s3">are 3 flights of stairs</option>
+                        <option value="s4">are 4 flights of stairs</option>
+                        <option value="s5+">are 5+ flights of stairs</option>
+                        <option value="l1">is a lift and we're on the first floor</option>
+                        <option value="l2">is a lift and we're on the second floor</option>
+                        <option value="l3">is a lift and we're on the third floor</option>
+                        <option value="l4">is a lift and we're on the fourth floor</option>
+                        <option value="l5+">is a lift and we're on the fifth floor or higher</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="deliveryAddressResult">
+                </div>
+            </div>
+        </div>
+
+        
+
+        <!-- Hint about time when you are moving -->
+        <div class="container">
+            <h1 id="when_youre_moving"><b>When you're moving</b></h1>
+            <p>Tell us when you're moving so we can check and guarantee the drivers availability.</p>
+        </div>
+
+        <!-- Select time when you are moving and extra info -->
+        <div class="blueBanner">
+            <div class="container">
+                <div class="form-inline">
+                    <p>I'm planning to move on <input aria-required="true" class="form-control datePicker" id="move_date" name="move_date" placeholder="Moving date" value="" required="" type="text"> at 
+                    <select class="form-control" id="move_time" name="move_time">
+                    <option value="00:00">00:00</option><option value="00:15">00:15</option><option value="00:30">00:30</option><option value="00:45">00:45</option><option value="01:00">01:00</option><option value="01:15">01:15</option><option value="01:30">01:30</option><option value="01:45">01:45</option><option value="02:00">02:00</option><option value="02:15">02:15</option><option value="02:30">02:30</option><option value="02:45">02:45</option><option value="03:00">03:00</option><option value="03:15">03:15</option><option value="03:30">03:30</option><option value="03:45">03:45</option><option value="04:00">04:00</option><option value="04:15">04:15</option><option value="04:30">04:30</option><option value="04:45">04:45</option><option value="05:00">05:00</option><option value="05:15">05:15</option><option value="05:30">05:30</option><option value="05:45">05:45</option><option value="06:00">06:00</option><option value="06:15">06:15</option><option value="06:30">06:30</option><option value="06:45">06:45</option><option value="07:00">07:00</option><option value="07:15">07:15</option><option value="07:30">07:30</option><option value="07:45">07:45</option><option value="08:00">08:00</option><option value="08:15">08:15</option><option value="08:30">08:30</option><option value="08:45">08:45</option><option value="09:00">09:00</option><option value="09:15">09:15</option><option value="09:30">09:30</option><option value="09:45">09:45</option><option value="10:00">10:00</option><option value="10:15">10:15</option><option value="10:30">10:30</option><option value="10:45">10:45</option><option value="11:00">11:00</option><option value="11:15">11:15</option><option value="11:30">11:30</option><option value="11:45">11:45</option><option value="12:00" selected="selected">12:00</option><option value="12:15">12:15</option><option value="12:30">12:30</option><option value="12:45">12:45</option><option value="13:00">13:00</option><option value="13:15">13:15</option><option value="13:30">13:30</option><option value="13:45">13:45</option><option value="14:00">14:00</option><option value="14:15">14:15</option><option value="14:30">14:30</option><option value="14:45">14:45</option><option value="15:00">15:00</option><option value="15:15">15:15</option><option value="15:30">15:30</option><option value="15:45">15:45</option><option value="16:00">16:00</option><option value="16:15">16:15</option><option value="16:30">16:30</option><option value="16:45">16:45</option><option value="17:00">17:00</option><option value="17:15">17:15</option><option value="17:30">17:30</option><option value="17:45">17:45</option><option value="18:00">18:00</option><option value="18:15">18:15</option><option value="18:30">18:30</option><option value="18:45">18:45</option><option value="19:00">19:00</option><option value="19:15">19:15</option><option value="19:30">19:30</option><option value="19:45">19:45</option><option value="20:00">20:00</option><option value="20:15">20:15</option><option value="20:30">20:30</option><option value="20:45">20:45</option><option value="21:00">21:00</option><option value="21:15">21:15</option><option value="21:30">21:30</option><option value="21:45">21:45</option><option value="22:00">22:00</option><option value="22:15">22:15</option><option value="22:30">22:30</option><option value="22:45">22:45</option><option value="23:00">23:00</option><option value="23:15">23:15</option><option value="23:30">23:30</option><option value="23:45">23:45</option>    </select>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <label for="payg_item_description">Please enter a brief description of the items you will be moving and any additional contact numbers:</label>
+                        <textarea class="form-control" id="payg_item_description" name="payg_item_description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hint About you (FIO) -->
+        <div class="container">
+            <h1 id="about_you"><b>About you</b></h1>
+            <p>We ask for your details so that we can send you a copy of 
+            your quotes, and if you then decide to book we can send your details to 
+            your driver. We may also send you occasional special offers. Don't worry
+            - we won’t spam you or share your details with anyone else, and you can
+            unsubscribe at any time.</p>
+        </div>
+
+        <!-- Enter FIO -->
+        <div class="blueBanner">
+            <div class="container form-inline">
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="form-group">
+                            <label for="customer_name">Name</label>
+                            <input aria-required="true" class="form-control" id="customer_name" name="customer_name" data-validation-required-message="Please enter your name" value="" required="" type="text">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="form-group">
+                            <label for="customer_email">Email</label>
+                            <input aria-required="true" class="form-control" id="customer_email" name="customer_email" data-validation-email-message="You must enter a valid email address" value="" required="" type="email">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="form-group">
+                            <label for="customer_phone">Phone Number</label>
+                            <input aria-required="true" class="form-control" id="customer_phone" name="customer_phone" data-validation-required-message="Please enter your phone number" value="" required="" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit btn -->
+        <div class="container">
+            <p class="text-center extraPadding"><button type="submit" class="btn btn-giant btn-success"><img src="{% static "images/white_van.png" %}"> Get My Free Quotes</button></p>
+            <input name="stage" value="2" type="hidden">
+        </div>
+
+    </form>
+
+    <div class="modal" id="sizeCalculator">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body" id="sizeCalculatorBody">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->        
+        
+</div>
+
+{% endblock %}

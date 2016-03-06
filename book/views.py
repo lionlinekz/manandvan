@@ -40,7 +40,19 @@ def book(request):
 
 
 
+def second(request):
+	context_dict = {}
 
+	if request.method == 'POST':
+		body = request.POST
+		orig = body.__getitem__('from')
+		dest = body.__getitem__('to')
+
+		context_dict['from'] = orig
+		context_dict['to'] = dest
+
+	return render(request, 'mymovetemplate.html', context_dict)
+# Create your views here.
 
 
 def index(request):
@@ -48,6 +60,8 @@ def index(request):
 # Create your views here.
 
 
+def base(request):
+	return render(request, 'base.html')
 
 def aboutus(request):
 	return render(request, 'about-us.html')

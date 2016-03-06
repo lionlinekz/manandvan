@@ -489,6 +489,10 @@ h3 {
 	margin-bottom: 20px;
 }
 
+.blueBanner.hidden-xs.firstBanner{	
+	margin-top: 58px;
+}
+
 .blueBanner p {
 	margin-bottom: 10px;
 	font-weight: 700;	

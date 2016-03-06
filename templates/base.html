@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+{% load static from staticfiles %}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Vanagoo</title>
+
+
+{% block css_block %}{% endblock %}
+
+<script src="{% static "css/jquery.min.js" %}"></script>
+
+<link rel="shortcut icon" href="{% static "images/favicon.png" %}" />
+</head>
+
+<body >
+<!-- Preloader -->
+<!-- Header -->
+<header>
+  <a href="/">Home</a>
+</header>
+<!-- //Header --> 
+<div>
+  {% block body_block %}empty base template{% endblock %}
+</div>
+
+<!-- //Main --> 
+
+<!-- Footer -->
+<footer>
+</footer>
+<!-- //Footer --> 
+
+<!-- jQuery --> 
+
+</body>
+</html>

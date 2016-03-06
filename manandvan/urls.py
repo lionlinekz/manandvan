@@ -20,10 +20,14 @@ from book import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^book.html', include('book.urls')),
+    url(r'^pageapp/', include('pageapp.urls')),
 
 
     #tmp templates
     
+    url(r'^base.html', views.base),
+    url(r'^second.html', views.second),
+
     url(r'^$', views.index),
     url(r'^index.html', views.index),
 
