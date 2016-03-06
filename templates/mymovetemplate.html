@@ -98,7 +98,7 @@ $( document ).ready(function() {
         var source = $(this).attr('data-source');
         var postcode = $('#' + source + '_postcode').val();
         button.html('Finding...');
-        $.get(encodeURI('/pageapp/routing-data.php?action=getAddressFromPostcode&postcode=' + postcode + '&target=' + source), function(data) {
+        $.get(encodeURI('pageapp/address/'+ source+'/'), function(data) {
             $('#' + source + 'AddressResult').html(data).fadeIn();
             button.html('Edit Address');
             if( $( window ).width() <= 767 ) { 

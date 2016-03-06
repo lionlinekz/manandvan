@@ -24,3 +24,10 @@ def approxprice(request):
 	return HttpResponse(s)
 
 
+def addresslist(request, aim=None):
+	context_dict = {}
+	context_dict['target'] = str(aim)
+
+	return render(request, 'addresslist.html', context_dict)
+
+
