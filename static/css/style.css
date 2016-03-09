@@ -3854,3 +3854,15 @@ select {
   padding-bottom: 5.1%;
   width: 100%;
 }
+.main-part.faq-page{
+	max-width: 980px;
+	width: 100%;
+	margin: 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.main-part.faq-page h2{
+	color: #424b82;
+	margin-top: 1%;
+	padding: 0 0 2px;
+}
