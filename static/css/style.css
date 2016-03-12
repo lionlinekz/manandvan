@@ -384,7 +384,7 @@ h6 {
 	width:88px;
 	height:88px;
 	border:1px solid #191F26;
-	margin:0 20px 30px 0;
+	margin:0 20px 80px 0;
 	-webkit-border-radius:45px;
 	-moz-border-radius:45px;
 	border-radius:45px;
@@ -680,10 +680,10 @@ h6 {
 .testimonials {
 	float:left;
 	width:100%;
-	background:url(../images/testimonials.png) 50% 100% no-repeat;
+	background:url(../images/testimonials2.png) 50% 100% no-repeat;
 	overflow:hidden;
 	color:#fff;
-	padding:90px 0 70px;
+	padding:225px 0 70px;
 }
 .testimonials h6 {
 	text-transform:uppercase;
