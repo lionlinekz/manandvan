@@ -611,7 +611,7 @@ h6 {
 }
 .intro .textwidget {
 	color:#fff;
-	padding-top:30%;
+	padding-top:10%;
 	text-align:center;
 }
 .intro .textwidget h1 {
@@ -627,7 +627,7 @@ h6 {
 .intro .actions {
 	margin:6px 0 0;
 	padding:46px 0 0;
-	background:url(../images/separator.jpg) 50% 0 no-repeat;
+	/*background:url(../images/separator.jpg) 50% 0 no-repeat;*/
 	border:none;
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;
@@ -717,7 +717,8 @@ h6 {
 	text-transform:uppercase;
 	padding:15px 0 0px;
 	margin:0 0 35px;
-	border-bottom:1px solid #fff;
+	/*border-bottom:1px solid #fff;*/
+	border-radius: 18px;
 }
 .advanced-search h3 {
 	font-size:20px;

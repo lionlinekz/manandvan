@@ -46,38 +46,7 @@
     </nav>
     <!-- //Main Nav --> 
   </div>
-  <div class="advanced-search color" id="booking">
-    <div class="wrap">
-      <form role="form" action="/second.html" method="post" id="next-page">
 
-        <!-- Row -->
-        <div class="f-row">
-          <div class="form-group datepicker one-fourth1">
-            <label for="dep-date">Departure date time</label>
-            {% csrf_token %}
-            <input type="text" id="dep-date" />
-          </div>
-          <div class="form-group datepicker one-fourth1">
-            <label for="dep-date">Collection Postcode</label>
-            <input name="from" type="text" id="dep-from" />
-          </div>
-          <div class="form-group datepicker one-fourth1">
-            <label for="dep-date">Delivery Postcode </label>
-            <input name="to" type="text" id="dep-to" />
-          </div>
-          <div class="col-lg-3 form-group datepicker margin-top-button one-sixth">
-            <button type="submit" class="btn large black">GET A QUOTE</button>
-          </div>
-        </div>
-        
-        <!-- //Row --> 
-        
-        <!-- Row --> 
-        
-        <!--// Row -->
-      </form>
-    </div>
-  </div>
 </header>
 <!-- //Header --> 
 
@@ -89,6 +58,38 @@
       <div class="textwidget">
         <h1 class="wow fadeInDown">ON DEMAND VAN AND MAN</h1>
         <h2 class="wow fadeInUp">MOVING & DELIVERY WITH THE PUSH OF A BUTTON </h2>
+        <div class="advanced-search color" id="booking">
+          <div class="wrap">
+            <form role="form" action="/second.html" method="post" id="next-page">
+
+              <!-- Row -->
+              <div class="f-row">
+                <div class="form-group datepicker one-fourth1">
+                  <label for="dep-date">Departure date time</label>
+                  {% csrf_token %}
+                  <input type="text" id="dep-date" />
+                </div>
+                <div class="form-group datepicker one-fourth1">
+                  <label for="dep-date">Collection Postcode</label>
+                  <input name="from" type="text" id="dep-from" />
+                </div>
+                <div class="form-group datepicker one-fourth1">
+                  <label for="dep-date">Delivery Postcode </label>
+                  <input name="to" type="text" id="dep-to" />
+                </div>
+                <div class="col-lg-3 form-group datepicker margin-top-button one-sixth">
+                  <button type="submit" class="btn large black">GET A QUOTE</button>
+                </div>
+              </div>
+              
+              <!-- //Row --> 
+              
+              <!-- Row --> 
+              
+              <!--// Row -->
+            </form>
+          </div>
+        </div>
         <div class="actions"> <a href="index.html#services" title="Our services" class="btn large white1 wow fadeInLeft anchor">LOG IN</a> <a href="index.html#booking" title="Make a booking" class="btn large color wow fadeInRight anchor">SIGN UP </a> </div>
       </div>
     </div>
