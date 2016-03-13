@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+{% load static from staticfiles %}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Vanagoo</title>
+<link rel="stylesheet" href="{% static "css/boostrap.css" %}" />
+<link rel="stylesheet" href="{% static "css/styler.css" %}" />
+<link rel="stylesheet" href="{% static "css/theme-pink.css" %}" id="template-color" />
+<link rel="stylesheet" href="{% static "css/style.css" %}" />
+<link rel="stylesheet" href="{% static "css/animate.css" %}" />
+
+{% block css_block %}{% endblock %}
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link rel="shortcut icon" href="{% static "images/favicon.png" %}" />
+</head>
+
+<body {% block home_mark_block %}{% endblock %}>
+<!-- Preloader -->
+<div class="preloader">
+  <div id="followingBallsG">
+    <div id="followingBallsG_1" class="followingBallsG"></div>
+    <div id="followingBallsG_2" class="followingBallsG"></div>
+    <div id="followingBallsG_3" class="followingBallsG"></div>
+    <div id="followingBallsG_4" class="followingBallsG"></div>
+  </div>
+</div>
+<!-- //Preloader --> 
+
+<!-- Header -->
+<header class="header" role="banner">
+  <div class="wrap"> 
+    <!-- Logo -->
+    <div class="logo"> <a href="/" title="Transfers"><img src="{% static "images/logo.png" %}" alt="Vanagoo" /></a> </div>
+    <!-- //Logo --> 
+    
+    <!-- Main Nav -->
+    <nav role="navigation" class="main-nav">
+      <ul>
+        <li class="active"><a href="index.html" title="">HOME</a></li>
+        <li><a href="how-it-works.html" title="HOW IT WORKS">HOW IT WORKS</a>
+        <li><a href="about-us.html" title="ABOUT US">ABOUT US</a> </li>
+        <li><a href="service-area.html" title="SERVICE AREA">SERVICE AREA</a></li>
+        <li><a href="faq.html" title="FAQ">FAQ</a> </li>
+      <li class="top-menu-margin"> <a class="LinkList-button js-header-download-button" href="index.html#"><img src="{% static "images/downlode-botton.png" %}" alt=""></a> </li>
+      </ul>
+    </nav>
+    <!-- //Main Nav --> 
+  </div>
+
+</header>
+<!-- //Header --> 
+
+{% block main_block %}empty base template{% endblock %}
+
+<!-- Footer -->
+<footer class="footer black" role="contentinfo">
+  <div class="wrap">
+    <div class="row"> 
+      <!-- Column -->
+      <article class="one-half">
+        <h6>About us</h6>
+        <p>Vanagoo is an On Demand Van and Man booking platform who makes your move enjoyable and hassle free. From a single envelope delivery to Vehicle transport, Full house move to an ebay purchase Vanagoo always will be one phone call away offering reasonable rates to its customers.</p>
+      </article>
+      <!-- //Column --> 
+      
+      <!-- Column -->
+      <article class="one-fourth">
+        <h6>Need help?</h6>
+        <p>Contact us via phone or email:</p>
+        <p class="contact-data"><span class="ico phone"></span> +1 555 555 555</p>
+        <p class="contact-data"><span class="ico email"></span> <a href="mailto:help@vanagoo.com">help@vanagoo.com</a></p>
+      </article>
+      <!-- //Column --> 
+      
+      <!-- Column -->
+      <article class="one-fourth">
+        <h6>Follow us</h6>
+        <ul class="social">
+          <li class="facebook"><a href="index.html#" title="facebook">facebook</a></li>
+          <li class="twitter"><a href="index.html#" title="twitter">twitter</a></li>
+          <li class="gplus"><a href="index.html#" title="gplus">google plus</a></li>
+          <li class="linkedin"><a href="index.html#" title="linkedin">linkedin</a></li>
+          </ul>
+      </article>
+      <!-- //Column --> 
+    </div>
+    <div class="copy">
+      <p>Copyright 2016, Vanagoo. All rights reserved. </p>
+      <nav role="navigation" class="foot-nav">
+        <ul>
+          <li><a href="becomeadriver.html" title="Home">BECOME A DRIVER </a></li>
+          <li><a href="" title="Blog">FOR PARTNERS </a></li>
+          <li><a href="" title="About us">MOVING GUIDE </a></li>
+          <li><a href="contact.html" title="Contact us">CONTACT US </a></li>
+          <li><a href="terms.html" title="Terms of use">TERMS</a></li>
+          <li><a href="privacy.html" title="PRIVACY">PRIVACY</a></li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+<!-- //Footer --> 
+
+<!-- jQuery --> 
+<script src="{% static "css/jquery.min.js" %}"></script> 
+<script src="{% static "js/jquery.uniform.min.js" %}"></script> 
+<script src="{% static "js/jquery.uniform.min.js" %}"></script>
+<script src="{% static "js/jquery.slicknav.min.js" %}"></script> 
+<script src="{% static "js/wow.min.js" %}"></script> 
+<script src="{% static "js/search.js" %}"></script> 
+<script src="{% static "js/scripts.js" %}"></script>
+<script src="{% static "js/styler.js" %}"></script>
+{% block js_block %}{% endblock %}
+</body>
+</html>
