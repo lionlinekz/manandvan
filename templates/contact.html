@@ -5,73 +5,35 @@
 {% endblock %}
 
 {% block main_block %}
-	<div class="innermain" role="main"> 
+<div>
+<div class="row-fluid firstarea">
+  <div class="container">
 
-  <img src="images/banner-terms.png" alt="" >
+    <div class="image-above-area paddind-top3" id="our_team">
 
-  
+    <h2 class="margin-bottom" id="headding-center"> CONTACT US </h2>
+    <h4 id="headding-center"> WE WOULD LOVE TO TALK TO YOU ABOUT ANY NEW PROJECTS<br><br> YOU MAY HAVE OR ANY OF THE SERVICES THAT WE OFFER. </h4>
+
+    <div class="col-lg-4"><div class="imagearea-about"><img src="{% static "images/contact_mail.png" %}" alt=""></div>
+    <h4 class="imagearea-about text-center paddind-top margin-bottom">EMAIL US</h4>
+    <span class="subtitle-about text-center"></span>
+    <p class="text-center">info@vanagoo.com</p>
+    </div>
+    <div class="col-lg-4"><div class="imagearea-about"><img src="{% static "images/contact_phone.png" %}" alt=""></div>
+
+    <h4 class="imagearea-about text-center paddind-top margin-bottom">GET A QUOTE</h4>
+    <span class="subtitle-about text-center"></span>
+    <p class="text-center">Call us on +1 555 555 555</p>
+    </div>
+    <div class="col-lg-4"><div class="imagearea-about"><img src="{% static "images/contact_facebook.png" %}" alt=""></div>
+
+    <h4 class="imagearea-about text-center paddind-top margin-bottom">FOLLOW US</h4>
+    <span class="subtitle-about text-center"></span>
+    <p class="text-center">facebook.com/vanagoo</p>
+    </div>
+    </div>
+ 
   </div>
-		<!--- //Google map -->
-		<div class="main-part">
-		<div class="wrap">
-			<div class="row">
-				
-				<!--- Content -->
-				<div class="full-width content textongrey">
-					<h2>Send us a message</h2>
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit. All fields are required.</p>
-				</div>
-				<!--- //Content -->
-				
-				<!-- Form -->
-				<div class="three-fourth">
-					<form method="post" action="http://themeenergy.com/themes/html/transfers/contact_form_message.php" name="contactform" id="contactform">
-						<div id="message"></div>
-						<div class="f-row">
-							<div class="one-half">
-								<label for="name">Name and surname</label>
-								<input type="text" id="name" />
-							</div>
-							<div class="one-half">
-								<label for="email">Email address</label>
-								<input type="email" id="email" />
-							</div>
-						</div>
-						<div class="f-row">
-							<div class="full-width">
-								<label for="comments">Message</label>
-								<textarea id="comments"></textarea>
-							</div>
-						</div>
-						<div class="f-row">
-							<input type="submit" value="Submit" id="submit" name="submit" class="btn color medium right" />
-						</div>
-					</form>
-				</div>
-				<!-- //Form -->
-				
-				<!--- Sidebar -->
-				<aside class="one-fourth sidebar right">
-					<!-- Widget -->
-					<div class="widget">
-						<h4>Need help booking?</h4>
-						<div class="textwidget">
-							<p>Call our customer services team on the number below to speak to one of our advisors who will help you with all of your needs.</p>
-							<p class="contact-data"><span class="ico phone black"></span> +1 555 555 555</p>
-						</div>
-					</div>
-					<!-- //Widget -->
-					
-					<!-- Widget -->
-					<div class="widget">
-						<h4>Advertisment</h4>
-						<a href="contact.html#"><img src="images/uploads/advertisment.jpg" alt="" /></a>
-					</div>
-					<!-- //Widget -->
-				</aside>
-				<!--- //Sidebar -->
-			</div>
-		</div>
-	</main></div>
-	<!-- //Main -->
+</div>
+</div>
 {% endblock %}
