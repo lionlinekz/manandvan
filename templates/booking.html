@@ -1,0 +1,28 @@
+{% extends 'basevanandman.html' %}
+{% load static from staticfiles %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block main_block %}
+<div class="innermain" role="main"> 
+	<table>
+		<tr><td>approx. distance: </td><td>{{drive_dist}}</td></tr>
+		<tr><td>approx. time: </td><td>{{drive_time}}</td></tr>
+		<tr><td>van_size</td><td>{{van_size}}</td></tr>
+		<tr><td>helpers_required</td><td>{{helpers_required}}</td></tr>
+		<tr><td>collection_postcode</td><td>{{collection_postcode}}</td></tr>
+		<tr><td>collection_stairs</td><td>{{collection_stairs}}</td></tr>
+		<tr><td>delivery_postcode</td><td>{{delivery_postcode}}</td></tr>
+		<tr><td>delivery_stairs</td><td>{{delivery_stairs}}</td></tr>
+		<tr><td>move_date</td><td>{{move_date}}</td></tr>
+		<tr><td>move_time</td><td>{{move_time}}</td></tr>
+		<tr><td>item_description</td><td>{{payg_item_description}}</td></tr>
+		<tr><td>customer_name</td><td>{{customer_name}}</td></tr>
+		<tr><td>customer_email</td><td>{{customer_email}}</td></tr>
+		<tr><td>customer_phone</td><td>{{customer_phone}}</td></tr>
+	</table>
+</div>
+
+
+{% endblock %}
