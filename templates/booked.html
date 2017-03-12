@@ -1,0 +1,545 @@
+{% extends 'base.html' %}
+
+{% load static from staticfiles %}
+
+{% block css_block %}
+<link href="{% static "css/css.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/bootstrap.css" %}" type="text/css" rel="stylesheet">
+<link href="{% static "css/jquery.css" %}" type="text/css" rel="stylesheet">
+<link href="{% static "css/v3.css" %}" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block body_block %}
+
+  <body>
+  
+    		
+    <div id="pageContent">
+    
+    	        
+        	
+<style>
+
+.payOption {
+	background-color: #FFF;
+	border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 10px;
+	color: #333;
+	cursor: pointer;
+}
+
+.payOption.selected {
+	background-color: #414141;
+	color: #FFF;
+}
+
+#quote-expired {
+	display: none;
+}
+
+/*
+.quote-summary {
+	padding-bottom: 14px;
+} */
+
+.orange-background {
+	margin-top: 10px;
+	padding: 10px;
+	border-radius: 2px;
+}
+
+.orange-background h2 {
+	margin-top: 0;
+	margin-bottom: 20px;
+	color: #FFF;
+}
+
+</style>
+
+<script src="./Book Now_files/jquery.scrollintoview.min.js"></script>
+
+<script>
+
+$( document ).ready(function() {
+
+		var depositAmount = 68.38;
+		var totalAmount = 189.15;
+		var amount_being_paid;
+		
+		function checkQuoteExists() {
+			$.get('/pageapp/book-redirect.php?action=check-quote-exists&quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c', function(data) {
+					
+				if(data != 1) {
+					quoteNoLongerExsists();
+				}
+				
+			});
+		}
+		
+		function quoteNoLongerExsists() {
+			$("#quote-expired").fadeIn().scrollintoview();
+			$("#payDeposit").prop('disabled', true);
+			$("#payTotal").prop('disabled', true);
+			$("#payNowWorldPay").prop('disabled', true);
+			$("#payNowPayPay").prop('disabled', true);
+			$(".quote-summary").fadeTo("slow", 0.4);
+			clearInterval(checkQuoteIsValid);
+		}
+		
+		$('#payDeposit').click(function() { 
+			$('#cashButton').slideUp();
+			$('.itemDescription').val('Compare The Man And Van Deposit');
+			$('.itemAmount').val(depositAmount);
+			amount_being_paid = depositAmount;
+			$('#payButtons').slideDown(function() {
+				$("#payButtons").scrollintoview();
+			});
+		});
+		
+		$('#payTotal').click(function() { 
+			$('#cashButton').slideUp();
+			$('.itemDescription').val('Compare The Man And Van Total');
+			$('.itemAmount').val(totalAmount);
+			amount_being_paid = totalAmount;
+			$('#payButtons').slideDown(function() {
+				$("#payButtons").scrollintoview();
+			});
+		});
+		
+		$('#payCash').click(function() { 
+			$("#payButtons").slideUp();
+			amount_being_paid = totalAmount;
+			$('#cashButton').slideDown(function() {
+				$("#cashButton").scrollintoview();
+			});
+		});
+		
+		$('#worldPayForm').submit( function(e) {
+			
+			var form = this;
+			e.preventDefault();
+			
+			$('#payNowWorldPay').html('<span class="glyphicon glyphicon-transfer"></span> Please wait...').prop('disabled', true);
+			
+			$.get('/pageapp/book-redirect.php?action=check-quote-exists&quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c', function(data) {
+				if(data == 1) {
+					form.submit();
+				} else {
+					quoteNoLongerExsists();
+					return false;
+				}
+			});
+		
+		});
+		
+		$('#payPalForm').submit( function(e) {
+			
+			var form = this;
+			e.preventDefault();
+			
+			$('#payNowPayPal').html('<span class="glyphicon glyphicon-transfer"></span> Please wait...').prop('disabled', true);
+			
+			$.get('/pageapp/book-redirect.php?action=check-quote-exists&quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c', function(data) {
+				if(data == 1) {
+					
+					ga('require', 'ecommerce');
+					ga('ecommerce:addTransaction', {
+					  'id': 'BD19 6DQ 10-08-2016 09:50 PP',
+					  'revenue': amount_being_paid
+					});
+					ga('ecommerce:send');
+					
+					setTimeout(function() {
+					form.submit();
+					}, 1000);
+					
+				} else {
+					
+					quoteNoLongerExsists();
+					return false;
+					
+				}
+			});
+		
+		});
+		
+		$('#cashForm').submit( function(e) {
+			
+			var form = this;
+			e.preventDefault();
+			
+			$('#payNowCash').html('<span class="glyphicon glyphicon-transfer"></span> Please wait...').prop('disabled', true);
+			
+			$.get('/pageapp/book-redirect.php?action=check-quote-exists&quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c', function(data) {
+				if(data == 1) {
+					form.submit();
+				} else {
+					quoteNoLongerExsists();
+					return false;
+				}
+			});
+		
+		});
+		
+		$('.payOption').click(function() {
+			
+			$('.payOption').each(function() {
+				$(this).removeClass('selected');
+			});
+			
+			$(this).addClass('selected');
+			
+			console.log('clicked');
+			$(this).find('input[type=radio]').prop("checked", true).trigger('click');
+			
+		});
+		
+		$('.payOption input').click(function(e) {
+			e.stopPropagation();
+		});
+		
+		
+		var checkQuoteIsValid = setInterval(function() {
+			checkQuoteExists();
+		}, 30000);
+		
+	
+});
+
+
+</script>
+
+
+<div class="container topMargin">
+
+		
+	<div class="row extraPadding" id="quote-expired">
+	
+			<div class="alert alert-danger" role="alert">
+				<h4><span class="glyphicon glyphicon-warning-sign"></span> This quote has expired</h4>
+				<p>This quote is no longer valid. Possibly because you changed your move requirements, the driver has been booked, or because it was created too long ago. Don't worry though, you can <a href="https://www.comparethemanandvan.co.uk/my-quotes" class="alert-link">go back to your quotes</a> where there are loads more to choose from.</p>
+			</div>
+		
+	</div>
+	
+	
+		<div class="row">
+		
+			<div class="col-xs-12 col-md-7">
+			
+				<div class="row">
+				
+					<div class="col-xs-8">
+					
+						<h2>Your Move</h2>
+					
+					</div>
+					
+					<div class="col-xs-4">
+				
+					</div>
+				
+				</div>
+			
+				<p>You are moving on <b>Wednesday 10th August</b> at <b>23:15</b> from <b>Dfasfd, BD19 6DQ</b> to <b>Asfdas, B8 3TF</b>.</p> 
+				
+		<p>You need a <b>large (extra long wheel base) van</b> for <b>3 hours</b> and <b>don't need any help loading it</b>.</p>				
+				<div class="row">
+				
+					<div class="col-xs-8">
+				
+						<h2>Your Details</h2>
+						
+					</div>
+					
+					<div class="col-xs-4">
+					
+								
+					</div>
+						
+				</div>
+				
+				<p class="extraPadding">Please check to ensure your details are correct, we will use them to contact you about your booking:</p>
+				
+				<table class="table">
+					<tbody><tr>
+						<td class="col-xs-3"><b>Name:</b></td>
+						<td class="col-xs-6">petr</td>
+					</tr>
+					<tr>
+						<td class="col-xs-3"><b>Email:</b></td>
+						<td class="col-xs-6">petr@petr.com</td>
+					</tr>
+					<tr>
+						<td class="col-xs-3"><b>Phone Number:</b></td>
+						<td class="col-xs-6">23423413</td>
+					</tr>
+				</tbody></table>
+									 
+				
+				<div class="row topMargin">
+		
+						<div class="col-xs-12 col-md-12">
+						
+							<div class="well well-sm">
+							
+								<h3 class="noTopMargin">What happens next?</h3>
+						
+								<p>Once you have made your payment you will receive an email and text message confirming that your booking has been placed.</p>
+								<p class="text-right"><a class="helpModal btn btn-success btn-sm" data-help="what-happens-next" href="https://www.comparethemanandvan.co.uk/book?quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c#">Show more...</a></p>
+								
+							</div>
+						
+						</div>
+					
+					</div>
+				
+			
+			</div>
+		
+		
+		<div class="col-xs-12 col-md-5">
+		
+		<div class="orange-background quote-summary">
+		
+		<h2>How would you like to pay?</h2>		
+
+								
+						<div class="row">
+						
+									<div class="col-xs-12 col-md-12">
+									
+										<div class="payOption">
+											
+											
+												<h4><label for="payTotal"><input type="radio" name="payWhat" value="total" id="payTotal"> Pay the total on card now</label></h4>
+										
+												<p>Pay <strong>£189.15</strong> on a credit or debit card, or by PayPal.</p>
+												
+											
+										</div>
+										
+										<div class="payOption">
+										
+											
+												<h4><label for="payDeposit"><input type="radio" name="payWhat" value="deposit" id="payDeposit"> Pay the deposit now, and then the rest in cash to the driver</label></h4>
+												
+												<p>Pay the deposit of <strong>£68.38</strong> now on a credit or debit card, or by PayPal.</p>
+										
+												<p>On the day you'll pay <strong>£120.78</strong> to the driver in cash, or on card.</p>
+											
+									
+										</div>
+						
+													
+											
+									</div>
+									
+							</div>
+				
+				</div>
+				
+				<div class="row topMargin" id="payButtons" style="display: none;">
+				
+								
+					<div class="col-xs-12 col-sm-6 col-md-6 text-center">
+							<form action="https://secure.worldpay.com/wcc/purchase" name="worldPayDeposit" id="worldPayForm" method="POST">
+								<input type="hidden" name="instId" value="1014492">
+								<input type="hidden" name="cartId" value="57aaeac806d6a-efe949cec53558983a1607cad4086c8c">
+								<input type="hidden" name="currency" value="GBP">
+								<input type="hidden" name="amount" value="" class="itemAmount">
+								<input type="hidden" name="desc" value="" class="itemDescription">
+																<input type="hidden" name="email" value="petr@petr.com">
+								<input type="hidden" name="name" value="petr">
+								<input type="hidden" name="tel" value="23423413">
+								<input type="hidden" name="address1" value="Dfasfd">
+								<input type="hidden" name="town" value="Asfs">
+								<input type="hidden" name="postcode" value="BD19 6DQ">
+								<input type="hidden" name="country" value="GB">
+							<p class="text-center"><button type="submit" class="btn btn-success btn-lg btn-block text-uppercase payButton" id="payNowWorldPay">Pay with card</button></p>
+							</form>
+					</div>
+					
+					<div class="col-xs-12 col-sm-6 col-md-6 text-center">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" id="payPalForm">
+								<input type="hidden" name="cmd" value="_xclick">
+								<!-- <input type="hidden" name="business" value="charliealexander113@yahoo.com"> -->
+								<input type="hidden" name="business" value="ta1ex@hotmail.co.uk">
+								<input type="hidden" name="lc" value="GB">
+								<input type="hidden" name="item_name" value="" class="itemDescription">
+								<input type="hidden" name="item_number" value="57aaeac806d6a-efe949cec53558983a1607cad4086c8c">
+								<input type="hidden" name="amount" value="" class="itemAmount">
+								<input type="hidden" name="currency_code" value="GBP">
+								<input type="hidden" name="button_subtype" value="services">
+								<input type="hidden" name="return" value="https://www.comparethemanandvan.co.uk/thank-you?quote=57aaeac806d6a-efe949cec53558983a1607cad4086c8c">
+								<input type="hidden" name="cancel_return" value="https://www.comparethemanandvan.co.uk/my-quotes">
+								<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynow_LG.gif:NonHosted">
+								<p class="text-center"><button type="submit" class="btn btn-success btn-lg text-uppercase btn-block payButton" id="payNowPayPal">Pay with PayPal</button> <img alt="" border="0" src="./Book Now_files/pixel.gif" width="1" height="1"></p>
+								
+							</form>
+					</div>
+					
+				</div>
+				
+				<div class="row topMargin" id="cashButton" style="display: none;">
+				
+					<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+							<form action="https://www.comparethemanandvan.co.uk/payment-response/cash.php" method="post" target="_top" id="cashForm">
+								<input type="hidden" name="cartId" value="57aaeac806d6a-efe949cec53558983a1607cad4086c8c">
+								<input type="hidden" name="amount" value="189.154">
+								<p class="text-center"><button type="submit" class="btn btn-success btn-lg btn-block text-uppercase payButton" id="payNowCash">Confirm Booking</button></p>
+								
+							</form>
+					</div>
+				
+				</div>
+        
+			</div>
+		
+		</div>
+		
+		<div class="row extraPadding">
+		
+					<div class="col-xs-12 col-sm-6 col-md-6">
+				
+						<!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tbody><tr><td align="center"></td></tr><tr><td align="center"><a href="https://www.paypal.com/uk/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open(&#39;https://www.paypal.com/uk/webapps/mpp/paypal-popup&#39;,&#39;WIPaypal&#39;,&#39;toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700&#39;); return false;"><img src="./Book Now_files/pp-logo-200px.png" border="0" alt="PayPal Logo"></a></td></tr></tbody></table><!-- PayPal Logo -->
+					
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-md-6">
+					
+						<script language="JavaScript" src="./Book Now_files/logo"></script><table cellspacing="2" border="0" align="center"><tbody><tr><td><a href="http://www.mastercard.com/" target="_blank"><img src="./Book Now_files/WP_ECMC.gif" border="0" alt="MasterCard"></a></td><td><a href="http://www.jcbusa.com/" target="_blank"><img src="./Book Now_files/WP_JCB.gif" border="0" alt="JCB"></a></td><td><a href="http://www.maestrocard.com/" target="_blank"><img src="./Book Now_files/WP_MAESTRO.gif" border="0" alt="Maestro"></a></td><td><a href="http://www.visa.com/" target="_blank"><img src="./Book Now_files/WP_VISA_DELTA.gif" border="0" alt="Visa Debit"></a></td></tr><tr><td colspan="4" align="center"><a href="http://www.worldpay.com/support/index.php?CMP=BA22713" target="_blank"><img src="./Book Now_files/poweredByWorldPay.gif" border="0" alt="Powered by WorldPay"></a></td></tr></tbody></table>
+					
+					</div>
+		
+				</div>
+		
+</div>        
+            	
+    </div>
+    
+    <div class="terms">
+    
+    	<div class="container">
+    
+                <div class="row">
+                
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						
+						<h3>About Us</h3>
+							
+						<ul class="list-unstyled">
+							<li>Compare The Man And Van</li>
+							<li>143 Kingston Rd, Wimbledon</li>
+							<li>London SW19 1LJ</li>
+							<li><a href="mailto:hello@comparethemanandvan.co.uk">hello@comparethemanandvan.co.uk</a></li>
+						</ul>
+								  
+					</div>
+							
+					<div class="col-xs-12 col-sm-6 col-md-4">
+					
+						<h3>The Small Print</h3>
+							
+						<ul class="list-unstyled">
+							<li><a href="https://www.comparethemanandvan.co.uk/terms/customer">Term and Conditions</a></li>
+							<li><a href="https://www.comparethemanandvan.co.uk/help/privacy-cookies">Privacy and Cookie Policy</a></li>
+						</ul>
+							
+					</div>
+			
+					<div class="col-xs-12 col-sm-6 col-md-4">
+					
+						<h3>Social</h3>
+					
+						<ul class="list-inline">
+							<li><a href="https://www.facebook.com/pages/Compare-The-Man-And-Van/273564726143498"><img src="./Book Now_files/facebook_white.png" width="32" height="32" alt="Facebook"></a></li>
+							<li><a href="https://twitter.com/comparevan"><img src="./Book Now_files/twitter_white.png" width="32" height="32" alt="Twitter"></a></li>
+							<li><a href="http://www.pinterest.com/comparetheman/"><img src="./Book Now_files/pinterest_white.png" width="32" height="32" alt="Pinterest"></a></li>
+							<li><a href="https://www.linkedin.com/company/compare-the-man-&amp;-van"><img src="./Book Now_files/linkedin_white.png" width="32" height="32" alt="LinkedIn"></a></li>
+							<li><a href="http://plus.google.com/111621987416423438052"><img src="./Book Now_files/google_plus_white.png" width="32" height="32" alt="Google+"></a></li>
+						</ul>
+						
+						  										
+					</div>
+				
+				</div>
+                
+           </div>
+    
+    </div>
+    
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="quoteTypeInfoModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          </div>
+          <div class="modal-body" id="helpModalBody">
+          
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+	<div id="mobile-menu" class="sidr left" style="transition: left 0.2s ease;">
+		<ul class="list-unstyled">
+			  <li><a href="https://www.comparethemanandvan.co.uk/my-account" class="btn btn-success btn-block">My Account</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/">Home</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/join-us">Drivers</a></li>			  <li><a href="https://www.comparethemanandvan.co.uk/areas-we-cover">Areas We Cover</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/size-guide">Size Guide</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/moving-guide">Moving Guide</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/faq">FAQ</a></li>
+			  <li><a href="https://www.comparethemanandvan.co.uk/contact">Contact Us</a></li>
+			  <li><a href="tel:+442036219481">Call: 020 3621 9481</a></li>
+			  <li><a href="https://www.facebook.com/pages/Compare-The-Man-And-Van/273564726143498"><img src="./Book Now_files/facebook_white.png" alt="Facebook"></a> 
+			  <a href="https://twitter.com/comparevan"><img src="./Book Now_files/twitter_white.png" alt="Twitter"></a> 
+			  <a href="http://www.pinterest.com/comparetheman/"><img src="./Book Now_files/pinterest_white.png" alt="Pinterest"></a></li>
+			  <li><a href="https://play.google.com/store/apps/details?id=com.andromo.dev315899.app299474"><img src="./Book Now_files/android.png" alt="Download for Android"></a></li>
+		</ul>
+	</div>
+	
+    <script src="./Book Now_files/bootstrap.min.js"></script>
+    
+    <script src="./Book Now_files/compare-2.1.4.js"></script>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-49992175-1', 'comparethemanandvan.co.uk');
+	  ga('send', 'pageview');
+
+   </script>
+   
+    <!-- Google Code for Remarketing Tag -->
+	
+	<div style="display: none;">
+
+		<script type="text/javascript">
+		/* <![CDATA[ */
+			var google_conversion_id = 991557463;
+			var google_custom_params = window.google_tag_params;
+			var google_remarketing_only = true;
+		/* ]]> */
+		</script>
+		<script type="text/javascript" src="./Book Now_files/conversion.js"></script><iframe name="google_conversion_frame" title="Google conversion frame" width="300" height="13" src="./Book Now_files/saved_resource.html" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no"></iframe>
+			<noscript>
+				&lt;div style="display:inline;"&gt;
+					&lt;img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/991557463/?value=0&amp;amp;guid=ON&amp;amp;script=0"/&gt;
+				&lt;/div&gt;
+			</noscript>
+		
+	</div>
+	
+	<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4029242"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script><noscript>&lt;img src="//bat.bing.com/action/0?ti=4029242&amp;Ver=2" height="0" width="0" style="display:none; visibility: hidden;" /&gt;</noscript>
+	
+	    
+  
+<div style="width:0px; height:0px; display:none; visibility:hidden;" id="batBeacon0.16067917831385858"><img style="width:0px; height:0px; display:none; visibility:hidden;" id="batBeacon0.14017307553787894" width="0" height="0" src="./Book Now_files/0"><img style="width:0px; height:0px; display:none; visibility:hidden;" id="batBeacon0.6764714087123231" width="0" height="0" src="./Book Now_files/0(1)"></div></body>{% endblock %}

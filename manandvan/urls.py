@@ -29,14 +29,14 @@ urlpatterns = [
     url(r'^second.html', views.second),
 
     url(r'^$', views.index),
-    url(r'^index.html', views.index),
+    url(r'^index', views.index),
 
-    url(r'^about-us.html', views.aboutus),
+    url(r'^about-us', views.aboutus),
     url(r'^becomeadriver.html', views.becomeadriver),
     url(r'^contact.html', views.contact),
     url(r'^faq.html', views.faq),
     url(r'^for-partner.html', views.forpartner),
-    url(r'^how-it-works.html', views.howitworks),
+    url(r'^how-it-works', views.howitworks),
     url(r'^moving-guide.html', views.movingguide),
     url(r'^privacy.html', views.privacy),
     url(r'^service-area.html', views.servicearea),

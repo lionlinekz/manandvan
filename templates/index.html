@@ -13,26 +13,33 @@
   <div class="intro">
     <div class="wrap">
       <div class="textwidget">
+	    <br><br><br>
         <h1 class="wow fadeInDown">ON DEMAND VAN AND MAN</h1>
         <h2 class="wow fadeInUp">MOVING & DELIVERY WITH THE PUSH OF A BUTTON </h2>
         <div class="advanced-search color" id="booking">
           <div class="wrap">
-            <form role="form" action="/second.html" method="post" id="next-page">
+            <form role="form" action="/index" method="post" id="next-page">
+              {% if errors %}
+
+							{{ errors }}
+
+                            <hr>
+                            {% endif %}
 
               <!-- Row -->
               <div class="f-row">
                 <div class="form-group datepicker one-fourth1">
                   <label for="dep-date">Departure date time</label>
                   {% csrf_token %}
-                  <input type="text" id="dep-date" />
+                  <input type="text" id="dep-date" name="datetime" />
                 </div>
                 <div class="form-group datepicker one-fourth1">
                   <label for="dep-date">Collection Postcode</label>
-                  <input name="from" type="text" id="dep-from" />
+                  <input name="from_postcode" type="text" id="dep-from" />
                 </div>
                 <div class="form-group datepicker one-fourth1">
                   <label for="dep-date">Delivery Postcode </label>
-                  <input name="to" type="text" id="dep-to" />
+                  <input name="to_postcode" type="text" id="dep-to" />
                 </div>
                 <div class="col-lg-3 form-group datepicker margin-top-button one-sixth">
                   <button type="submit" class="btn large black">GET A QUOTE</button>
@@ -44,8 +51,9 @@
               <!-- Row --> 
               
               <!--// Row -->
+
             </form>
-          </div>
+                      </div>
         </div>
         <div class="actions"> <a href="index.html#services" title="Our services" class="btn large white1 wow fadeInLeft anchor">LOG IN</a> <a href="index.html#booking" title="Make a booking" class="btn large color wow fadeInRight anchor">SIGN UP </a> </div>
       </div>
@@ -213,5 +221,8 @@
 
 {% endblock %}
 {% block js_block %}
+<script src="{% static "js/bootstrap.js" %}"></script> 
 <script src="{% static "js/jquery.datetimepicker.js" %}"></script> 
+<script src="{% static "js/date_default.js" %}"></script>
+
 {% endblock %}

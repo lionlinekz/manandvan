@@ -25,21 +25,21 @@ $( document ).ready(function() {
             '<div class="col-xs-12 col-md-3">' +
             '<label for="via_' + viaCount + '_postcode">Via</label>' +
             '<div class="input-group">' +
-            '<input type="text" class="form-control" id="via_' + viaCount + '_postcode" name="via_postcode[]" placeholder="Postcode"' + 'required>' +
+            '<input type="text" class="form-control" id="via_' + viaCount + '_postcode" name="via'+viaCount+'_postcode" placeholder="Postcode"' + 'required>' +
             '<span class="input-group-btn">' +
             '<button class="btn btn-green findAddress" data-source="via_' + viaCount + '" type="button">Find Address</button>' +
             '</span>' +
             '</div>' +
             '</div>' +
             '<div class="col-xs-12 col-md-3">' +
-            '<label for="via_' + viaCount + '_street_address_1">Street Address</label> <input type="text" class="form-control" id="via_' + viaCount + '_street_address_1" name="via_street_address_1[]" required>' +
+            '<label for="via_' + viaCount + '_street_address">Street Address</label> <input type="text" class="form-control" id="via_' + viaCount + '_street_address_1" name="via' + viaCount + '_street_address" required>' +
             '</div>' +
             '<div class="col-xs-12 col-md-3">' +
-            '<label for="via_' + viaCount + '_city">City</label> <input type="text" class="form-control" id="via_' + viaCount + '_city"' + 'name="via_city[]">' +
+            '<label for="via_' + viaCount + '_city">City</label> <input type="text" class="form-control" id="via_' + viaCount + '_city"' + 'name="via'+viaCount+'_city">' +
             '</div>' +
             '<div class="col-xs-12 col-md-3 form-inline">' +
             '<label for="via_' + viaCount + '_stairs">At this address there</label>' +
-            '<select class="form-control" id="via_' + viaCount + '_stairs" name="via_stairs[]" style="width: 218px;">' +
+            '<select class="form-control" id="via_' + viaCount + '_stairs" name="via'+viaCount+'_stairs" style="width: 218px;">' +
             '<option value="0">are no flights of stairs</option>' +
             '<option value="s1">is 1 flight of stairs</option>' +
             '<option value="s2">are 2 flights of stairs</option>' +
@@ -277,7 +277,8 @@ function calculatePassengerSpace() {
 
 <div class="innermain">
     <!-- /pageapp/move-data.php -->
-    <form novalidate="novalidate" role="form" action="/pageapp/" method="get" id="my-move-form">
+    <form novalidate="novalidate" role="form" action="/second.html/" method="post" id="my-move-form">
+	    {% csrf_token %}
         <!-- estimate price -->
         <div class="blueBanner hidden-xs firstBanner">
             <div class="container">
@@ -314,28 +315,28 @@ function calculatePassengerSpace() {
                     <div class="col-xs-12 col-md-3">
                         <div class="itemSelect">
                             <label data-original-title="Typical Specifications&lt;br&gt;Length: 1.7 m / 5.58 ft&lt;br&gt;Width: 1.49 m / 4.89 ft&lt;br&gt;Height: 1.2 m / 3.94 ft&lt;br&gt;Payload 600 - 900kg&lt;br&gt;Seats (inc driver) 2" for="vanSizeSmall" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/small_van.png" %}">
-                            <p><input aria-required="true" name="van_size" id="vanSizeSmall" data-passenger-space="1" value="small_van" required="" type="radio"> Small van</p>
+                            <p><input aria-required="true" name="van_size" id="vanSizeSmall" data-passenger-space="1" value="1" required="" type="radio"> Small van</p>
                             </label>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-3">
                         <div class="itemSelect selected">
                             <label data-original-title="Typical Specifications&lt;br&gt;Length: 2.4 m / 7.87 ft&lt;br&gt;Width: 1.7 m / 5.58 ft&lt;br&gt;Height: 1.4 / 4.59 ft&lt;br&gt;Payload 900-1200kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeMedium" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/medium_van.png" %}">
-                            <p><input name="van_size" id="vanSizeMedium" data-passenger-space="2" value="medium_van" checked="checked" type="radio"> Medium van</p>
+                            <p><input name="van_size" id="vanSizeMedium" data-passenger-space="2" value="2" checked="checked" type="radio"> Medium van</p>
                             </label>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-3">
                         <div class="itemSelect">
                             <label data-original-title="Typical Specifications&lt;br&gt;Length: 3.4 m / 11.16 ft&lt;br&gt;Width: 1.7 m / 5.58 ft&lt;br&gt;Height: 1.7 m / 5.58 ft&lt;br&gt;Payload 1200-1500kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeXlwb" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/large_van.png" %}" title="Extra Large Wheel Base van">
-                            <p><input name="van_size" id="vanSizeXlwb" data-passenger-space="2" value="xlwb_van" title="Extra Large Wheel Base van" type="radio"> Large van</p>
+                            <p><input name="van_size" id="vanSizeXlwb" data-passenger-space="2" value="3" title="Extra Large Wheel Base van" type="radio"> Large van</p>
                             </label>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-3">
                         <div class="itemSelect">
                             <label data-original-title="Typical Specifications&lt;br&gt;Length: 4.0 m / 13.12 ft&lt;br&gt;Width: 2.0 m / 6.56 ft&lt;br&gt;Height: 2.2 m / 7.22 ft&lt;br&gt;Payload 1​2​00-1​6​00kg&lt;br&gt;Seats (inc driver) 3" for="vanSizeLuton" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""><img src="{% static "images/giant_van.png" %}" title="Luton van">
-                            <p><input name="van_size" id="vanSizeLuton" data-passenger-space="2" value="luton_van" title="Luton van" type="radio"> Giant van</p>
+                            <p><input name="van_size" id="vanSizeLuton" data-passenger-space="2" value="4" title="Luton van" type="radio"> Giant van</p>
                             </label>
                         </div>
                     </div>
@@ -430,7 +431,7 @@ function calculatePassengerSpace() {
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-3 form-horizontal">
-                        <label for="collection_street_address_1">Street Address</label> <input aria-required="true" class="form-control" id="collection_street_address_1" name="collection_street_address_1" value="" required="" type="text">
+                        <label for="collection_street_address_1">Street Address</label> <input aria-required="true" class="form-control" id="collection_street_address_1" name="collection_street_address" value="" required="" type="text">
                     </div>
                     <div class="col-xs-12 col-md-3 form-horizontal">
                         <label for="collection_city">City</label> <input class="form-control" id="collection_city" name="collection_city" value="" type="text">
@@ -476,7 +477,7 @@ function calculatePassengerSpace() {
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-3 form-horizontal">
-                        <label for="delivery_street_address_1">Street Address</label> <input aria-required="true" class="form-control" id="delivery_street_address_1" name="delivery_street_address_1" value="" required="" type="text">
+                        <label for="delivery_street_address">Street Address</label> <input aria-required="true" class="form-control" id="delivery_street_address_1" name="delivery_street_address" value="" required="" type="text">
                     </div>
                     <div class="col-xs-12 col-md-3 form-horizontal">
                         <label for="delivery_city">City</label> <input class="form-control" id="delivery_city" name="delivery_city" value="" type="text">
@@ -522,7 +523,7 @@ function calculatePassengerSpace() {
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <label for="payg_item_description">Please enter a brief description of the items you will be moving and any additional contact numbers:</label>
-                        <textarea class="form-control" id="payg_item_description" name="payg_item_description"></textarea>
+                        <textarea class="form-control" id="payg_item_description" name="description"></textarea>
                     </div>
                 </div>
             </div>
