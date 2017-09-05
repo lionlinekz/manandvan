@@ -16,6 +16,9 @@ class Address(models.Model):
 	street = models.CharField(max_length=128)
 	city = models.CharField(max_length=128)
 	stairs = models.CharField(max_length=10)
+
+	def __unicode__(self):  #For Python 2, use __str__ on Python 3
+		return self.postcode
 	
 class Van(models.Model):
 	first_name = models.CharField(max_length=100)
@@ -43,6 +46,9 @@ class Booking(models.Model):
 	name = models.CharField(max_length=128)
 	email = models.EmailField(max_length=128)
 	phone = models.CharField(max_length=20)
+
+	def __unicode__(self):  #For Python 2, use __str__ on Python 3
+		return str(self.departure)+"->"+str(self.arrival)+" "+self.phone+" "+self.name
 
 
 # Create your models here.

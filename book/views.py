@@ -173,6 +173,11 @@ def index(request):
 			seconds = (curtime-datetime.datetime(1970,1,1)).total_seconds()
 			u='https://maps.googleapis.com/maps/api/distancematrix/json?origins='+orig+'&destinations='+dest+'&mode=driving&departure_time='+str(int(seconds))+'&traffic_model=pessimistic&language=en-GB&key='+key
 			map_data=yaml.safe_load(requests.get(u).text)
+			context_dict['from'] = orig
+			context_dict['to'] = dest
+			booking_date = datetime.datetime.strptime(search.datetime, "%Y/%m/%d %H:%M")
+			context_dict['date'] = booking_date.strftime('%Y-%m-%d')
+			context_dict['time'] = booking_date.strftime('%H:%M')
 			if str(map_data['status'])=='OK':
 				'''context_dict['duration'] = map_data['rows'][0]['elements'][0]['duration']['text']
 				context_dict['price'] = int(float(map_data['rows'][0]['elements'][0]['distance']['value'])*0.001)
